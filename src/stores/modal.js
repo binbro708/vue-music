@@ -4,4 +4,11 @@ export default defineStore("modal", {
   state: () => ({
     isOpen: false,
   }),
+  getters: {
+    // 傳入state
+    hiddenClass(state) {
+      // 如果state是false就hidden
+      return !state.isOpen ? "hidden" : "";
+    },
+  },
 });

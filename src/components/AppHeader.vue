@@ -37,7 +37,7 @@ export default {
   methods: {
     toggleAuthModal() {
       // 這邊的modalStore會是modal.js裡的modal加上Store 是自動創建出來的，可以看vue開發者工具
-      this.modalStore.isOpen = !this.userStore.isOpen;
+      this.modalStore.isOpen = !this.modalStore.isOpen;
     },
   },
 };
