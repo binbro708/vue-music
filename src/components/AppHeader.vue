@@ -32,6 +32,7 @@ import useModalStore from "@/stores/modal";
 export default {
   name: "AppHeader",
   //   載進modalStore裡的modal
+  // 第一個參數 要帶入的store，第二個參數要帶入的State或Getter，第二個沒填就是整個都帶進來
   computed: { ...mapStores(useModalStore) },
   // 變更isOpen的值
   methods: {
