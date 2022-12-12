@@ -114,6 +114,9 @@
 </template>
 
 <script>
+// 導入之前寫的firebase
+import firebase from "@/includes/firebase";
+
 export default {
   name: "registerFrom",
   data() {
@@ -139,15 +142,27 @@ export default {
     };
   },
   methods: {
-    register(values) {
+    async register(values) {
       this.reg_in_sub = true;
       this.reg_show_alert = true;
       this.reg_alert_variant = "bg-blue-500";
       this.reg_alert_msg = "請稍等";
+      let userCred = null;
+      try {
+        // 傳入values的email跟password去創建帳戶 把回傳回來的東西放的userCred裡面
+        userCred = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(values.email, values.password);
+      } catch (err) {
+        this.reg_in_sub = false;
+        this.reg_alert_variant = "bg-red-500";
+        this.reg_alert_msg = "請重新嘗試";
+        return;
+      }
 
       this.reg_alert_variant = "bg-green-500";
       this.reg_alert_msg = "成功desu!";
-      console.log(values);
+      console.log(userCred);
     },
   },
 };

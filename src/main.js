@@ -3,8 +3,11 @@ import { createPinia } from "pinia";
 
 import App from "./App.vue";
 import router from "./router";
-// 匯入表單驗證
+// 匯入表單驗證設定
 import VeeValidatePlugin from "@/includes/validation";
+// 匯入firebase設定
+import "@/includes/firebase";
+
 import "@/assets/base.css";
 import "@/assets/main.css";
 
