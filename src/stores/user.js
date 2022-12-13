@@ -13,6 +13,7 @@ export default defineStore("user", {
   //   可以定義函數
   actions: {
     // 不用箭頭函式，這邊可以用this操作
+    // 註冊
     async register(values) {
       // 傳入values的email跟password去創建帳戶
       const userCred = await auth.createUserWithEmailAndPassword(
@@ -37,11 +38,17 @@ export default defineStore("user", {
       // 更改登入狀態
       this.userLoggedIn = true;
     },
+    // 登入方法
     async authenticate(values) {
       // 調用auth中的登入 參數需要有信箱與密碼
       await auth.signInWithEmailAndPassword(values.email, values.password);
 
       this.userLoggedIn = true;
+    },
+    // 登出方法 清除token
+    async signOut() {
+      await auth.signOut();
+      this.userLoggedIn = false;
     },
   },
 });

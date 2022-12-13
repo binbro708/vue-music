@@ -9,15 +9,25 @@
         <!-- Primary Navigation -->
         <ul class="flex flex-row mt-1">
           <!-- Navigation Links -->
-          <li>
-            <!-- 如果是登入狀態這邊就會消失，狀態控制用的是store裡的isOpen -->
+          <li v-if="!userStore.userLoggedIn">
             <a class="px-2 text-white" href="#" @click.prevent="toggleAuthModal"
               >Login / Register</a
             >
           </li>
-          <li>
-            <a class="px-2 text-white" href="#">Manage</a>
-          </li>
+          <template v-else>
+            <li>
+              <a class="px-2 text-white" href="#">Manage</a>
+            </li>
+            <li>
+              <!-- click調用store裡的登出事件 -->
+              <a
+                class="px-2 text-white"
+                href="#"
+                @click.prevent="userStore.signOut"
+                >Logout</a
+              >
+            </li>
+          </template>
         </ul>
       </div>
     </nav>
@@ -29,11 +39,13 @@
 import { mapStores } from "pinia";
 // 導入你的store
 import useModalStore from "@/stores/modal";
+// 這邊是為了取得登入狀態才能讓v-if有條件去判斷
+import useUserStore from "@/stores/user";
 export default {
   name: "AppHeader",
   //   載進modalStore裡的modal
   // 第一個參數 要帶入的store，第二個參數要帶入的State或Getter，第二個沒填就是整個都帶進來
-  computed: { ...mapStores(useModalStore) },
+  computed: { ...mapStores(useModalStore, useUserStore) },
   // 變更isOpen的值
   methods: {
     toggleAuthModal() {
