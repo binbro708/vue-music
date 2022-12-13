@@ -37,5 +37,11 @@ export default defineStore("user", {
       // 更改登入狀態
       this.userLoggedIn = true;
     },
+    async authenticate(values) {
+      // 調用auth中的登入 參數需要有信箱與密碼
+      await auth.signInWithEmailAndPassword(values.email, values.password);
+
+      this.userLoggedIn = true;
+    },
   },
 });

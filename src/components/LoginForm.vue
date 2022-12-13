@@ -41,6 +41,9 @@
 </template>
 
 <script>
+import { mapActions } from "pinia";
+import useUserStore from "@/stores/user";
+
 export default {
   name: "loginFrom",
   data() {
@@ -56,15 +59,26 @@ export default {
     };
   },
   methods: {
-    login(values) {
+    ...mapActions(useUserStore, ["authenticate"]),
+
+    async login(values) {
       this.login_in_sub = true;
       this.login_show_alert = true;
       this.login_alert_variant = "bg-blue-500";
       this.login_alert_msg = "請稍等";
 
+      try {
+        // 調用user.js裡的authenticate 並且把登入表單的values傳入
+        await this.authenticate(values);
+      } catch (err) {
+        this.login_in_sub = false;
+        this.login_alert_variant = "bg-red-500";
+        this.login_alert_msg = "請重新嘗試";
+        return;
+      }
+
       this.login_alert_variant = "bg-green-500";
       this.login_alert_msg = "成功desu!";
-      console.log(values);
     },
   },
 };

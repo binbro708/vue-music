@@ -292,11 +292,7 @@ export default {
     // auth.currentUser，它代表當前登入應用程式的使用者 如果有登入就會有東西回傳的就會是true 如果沒登入就會是null
     // 檢查當前是否有使用者登入，如果有登入則更新 userLoggedIn 狀態
     if (auth.currentUser) {
-      console.log("created", this.userLoggedIn);
-      console.log("created", auth.currentUser);
       this.userLoggedIn = true;
-      console.log("created", this.userLoggedIn);
-      console.log("created", auth.currentUser);
     }
   },
 };
