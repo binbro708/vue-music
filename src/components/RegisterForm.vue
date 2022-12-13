@@ -153,6 +153,7 @@ export default {
       this.reg_alert_variant = "bg-blue-500";
       this.reg_alert_msg = "請稍等";
       let userCred = null;
+      // 請求身分註冊
       try {
         // 傳入values的email跟password去創建帳戶 把回傳回來的東西放的userCred裡面
         userCred = await auth.createUserWithEmailAndPassword(
@@ -165,7 +166,7 @@ export default {
         this.reg_alert_msg = "請重新嘗試";
         return;
       }
-
+      // 請求加入資料庫
       //把資料加到users裡
       // 不用把密碼給加入，這是敏感訊息不該被儲存
       // 一樣使用await 上面要創建成功下面才會動
