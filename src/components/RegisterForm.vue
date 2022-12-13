@@ -114,9 +114,7 @@
 </template>
 
 <script>
-// 導入之前寫的firebase
-import { auth, userCollection } from "@/includes/firebase";
-import { mapWritableState } from "pinia";
+import { mapActions } from "pinia";
 import useUserStore from "@/stores/user";
 
 export default {
@@ -143,53 +141,29 @@ export default {
       reg_alert_msg: "請稍等",
     };
   },
-  computed: {
-    ...mapWritableState(useUserStore, ["userLoggedIn"]),
-  },
+  // 註冊pinia裡的Action
   methods: {
+    ...mapActions(useUserStore, { createUser: "register" }),
+
     async register(values) {
       this.reg_in_sub = true;
       this.reg_show_alert = true;
       this.reg_alert_variant = "bg-blue-500";
       this.reg_alert_msg = "請稍等";
-      let userCred = null;
+
       // 請求身分註冊
       try {
-        // 傳入values的email跟password去創建帳戶 把回傳回來的東西放的userCred裡面
-        userCred = await auth.createUserWithEmailAndPassword(
-          values.email,
-          values.password
-        );
+        // 使用註冊完的Action並且把values傳進去
+        await this.createUser(values);
       } catch (err) {
         this.reg_in_sub = false;
         this.reg_alert_variant = "bg-red-500";
         this.reg_alert_msg = "請重新嘗試";
         return;
       }
-      // 請求加入資料庫
-      //把資料加到users裡
-      // 不用把密碼給加入，這是敏感訊息不該被儲存
-      // 一樣使用await 上面要創建成功下面才會動
-      try {
-        await userCollection.add({
-          name: values.name,
-          email: values.email,
-          age: values.age,
-          country: values.country,
-        });
-      } catch (err) {
-        this.reg_in_sub = false;
-        this.reg_alert_variant = "bg-red-500";
-        this.reg_alert_msg = "請重新嘗試";
-        console.log(err);
-        return;
-      }
-      // 更改登入狀態
-      this.userLoggedIn = true;
 
       this.reg_alert_variant = "bg-green-500";
       this.reg_alert_msg = "成功desu!";
-      console.log(userCred);
     },
   },
 };
