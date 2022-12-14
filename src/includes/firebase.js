@@ -5,6 +5,8 @@ import firebase from "firebase/app";
 import "firebase/auth";
 // 匯入firebase資料庫服務
 import "firebase/firestore";
+// 匯入firebase儲存庫服務
+import "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDcDquBsHUWVzPVfqN7gWC4jyU0i8SzL1Y",
@@ -21,8 +23,11 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 // 操作資料庫
 const db = firebase.firestore();
+// 儲存庫
+const storage = firebase.storage();
+
 // 在資料庫選擇 如果沒有也沒關係firebase會自動幫你創建
 const userCollection = db.collection("users");
 
-// 再把兩個方法匯出，就能在別的地方使用這兩個方法，可以提高code的閱讀性
-export { auth, db, userCollection };
+// 再把方法匯出，就能在別的地方使用這些方法，可以提高code的閱讀性
+export { auth, db, userCollection, storage };
