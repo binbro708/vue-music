@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { storage } from "@/includes/firebase";
+import { storage, auth, songsCollection } from "@/includes/firebase";
 
 export default {
   name: "musicUpload",
@@ -72,7 +72,7 @@ export default {
         const songsRef = storageRef.child(`songs/${item.name}`); //music-89314.appspot.com/songs/example.mp3
         // 檔案上傳
         const task = songsRef.put(item);
-
+        console.log(task);
         // 把值傳進去上傳狀態的陣列
         //這裡的 -1 是用來獲取陣列中新添加的項目的索引值。當一個項目添加到陣列中時，JavaScript 的 Array.push() 方法會返回陣列的新長度。由於陣列的索引從 0 開始計算，因此添加到陣列中的新項目的索引值會比陣列的長度少 1。
         const uploadIndex =
@@ -89,18 +89,41 @@ export default {
         task.on(
           "state_changed",
           (snapshot) => {
+            // 上傳ing
             // 計算上傳百分比
             const progress =
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             this.uploads[uploadIndex].current_progress = progress;
           },
           (error) => {
+            // 上傳失敗
             this.uploads[uploadIndex].variant = "bg-red-400";
             this.uploads[uploadIndex].icon = "fas fa-times";
             this.uploads[uploadIndex].text_class = "text-red-400";
             console.log(error);
           },
-          () => {
+          async () => {
+            // 上傳成功
+            const song = {
+              // 紀錄上傳成功user的uid
+              uid: auth.currentUser.uid,
+              //  記錄使用者名稱
+              display_name: auth.currentUser.displayName,
+              // 紀錄歌曲上傳時的名字
+              original_name: task.snapshot.ref.name,
+              //   修改後的名字
+              modified_name: task.snapshot.ref.name,
+              genre: "",
+              //   總共評論數
+              comment_count: 0,
+              //
+            };
+
+            song.url = await task.snapshot.ref.getDownloadURL();
+            //把音樂資訊傳進資料庫
+            await songsCollection.add(song);
+            console.log(song.url);
+            console.log(auth.currentUser);
             this.uploads[uploadIndex].variant = "bg-green-400";
             this.uploads[uploadIndex].icon = "fas fa-check";
             this.uploads[uploadIndex].text_class = "text-green-400";

@@ -28,6 +28,8 @@ const storage = firebase.storage();
 
 // 在資料庫選擇 如果沒有也沒關係firebase會自動幫你創建
 const userCollection = db.collection("users");
+// 音樂儲存庫
+const songsCollection = db.collection("songs");
 
 // 再把方法匯出，就能在別的地方使用這些方法，可以提高code的閱讀性
-export { auth, db, userCollection, storage };
+export { auth, db, userCollection, storage, songsCollection };

@@ -42,7 +42,7 @@ export default defineStore("user", {
     async authenticate(values) {
       // 調用auth中的登入 參數需要有信箱與密碼
       await auth.signInWithEmailAndPassword(values.email, values.password);
-
+      console.log(auth.currentUser.displayName);
       this.userLoggedIn = true;
     },
     // 登出方法 清除token

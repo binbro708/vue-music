@@ -48,6 +48,7 @@ import { mapStores } from "pinia";
 import useModalStore from "@/stores/modal";
 // 這邊是為了取得登入狀態才能讓v-if有條件去判斷
 import useUserStore from "@/stores/user";
+
 export default {
   name: "AppHeader",
   //   載進modalStore裡的modal
@@ -61,7 +62,7 @@ export default {
     },
     // 如果只調用store裡面的登入的話，會留在原mange頁面，所以這邊這樣做讓他可以跳轉回首頁
     signOut() {
-      this.useUserStore.signOut();
+      this.userStore.signOut();
       //取得manage的meta去做判斷
       if (this.$route.meta.requiresAuth) {
         this.$router.push({ name: "home" });
