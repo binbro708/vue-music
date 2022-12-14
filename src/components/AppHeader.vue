@@ -64,7 +64,7 @@ export default {
     signOut() {
       this.userStore.signOut();
       //取得manage的meta去做判斷
-      if (this.$route.meta.requiresAuth) {
+      if (this.$route.name === "manage") {
         this.$router.push({ name: "home" });
       }
     },

@@ -21,6 +21,8 @@
       >
         <h5>Drop your files here</h5>
       </div>
+      <input type="file" multiple @change="upload($event)" />
+
       <hr class="my-6" />
       <!-- Progess Bars -->
       <div class="mb-4" v-for="item in uploads" :key="item.name">
@@ -60,7 +62,9 @@ export default {
       this.is_dragover = false;
 
       //   $event裡的files要直接訪問才看的到，這邊把檔案內容轉成陣列來跑迴圈上傳
-      const files = [...$event.dataTransfer.files];
+      const files = $event.dataTransfer
+        ? [...$event.dataTransfer.files]
+        : [...$event.target.files];
       files.forEach((item) => {
         // 驗證檔案屬性
         if (item.type != "audio/mpeg") {
@@ -72,9 +76,8 @@ export default {
         const songsRef = storageRef.child(`songs/${item.name}`); //music-89314.appspot.com/songs/example.mp3
         // 檔案上傳
         const task = songsRef.put(item);
-        console.log(task);
         // 把值傳進去上傳狀態的陣列
-        //這裡的 -1 是用來獲取陣列中新添加的項目的索引值。當一個項目添加到陣列中時，JavaScript 的 Array.push() 方法會返回陣列的新長度。由於陣列的索引從 0 開始計算，因此添加到陣列中的新項目的索引值會比陣列的長度少 1。
+        //這裡的 -1 是用來獲取陣列中新添加的項0.目的索引值。當一個項目添加到陣列中時，JavaScript 的 Array.push() 方法會返回陣列的新長度。由於陣列的索引從 0 開始計算，因此添加到陣列中的新項目的索引值會比陣列的長度少 1。
         const uploadIndex =
           this.uploads.push({
             task,
@@ -122,8 +125,6 @@ export default {
             song.url = await task.snapshot.ref.getDownloadURL();
             //把音樂資訊傳進資料庫
             await songsCollection.add(song);
-            console.log(song.url);
-            console.log(auth.currentUser);
             this.uploads[uploadIndex].variant = "bg-green-400";
             this.uploads[uploadIndex].icon = "fas fa-check";
             this.uploads[uploadIndex].text_class = "text-green-400";
@@ -131,6 +132,13 @@ export default {
         );
       });
     },
+  },
+  //   解除掛載前
+  beforeUnmount() {
+    this.uploads.forEach((item) => {
+        // task.cancel停止向firebase上傳
+      item.task.cancel();
+    });
   },
 };
 </script>
