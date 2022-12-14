@@ -178,19 +178,19 @@
 </template>
 
 <script>
-import useUserStore from "@/stores/user";
+// import useUserStore from "@/stores/user";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "manage",
-  beforeRouteEnter(to, from, next) {
-    // 在route創建前先載入它的資訊
-    const store = useUserStore();
-    if (store.userLoggedIn) {
-      next();
-    } else {
-      next({ name: "home" });
-    }
-  },
+  // beforeRouteEnter(to, from, next) {
+  //   // 在route創建前先載入它的資訊
+  //   const store = useUserStore();
+  //   if (store.userLoggedIn) {
+  //     next();
+  //   } else {
+  //     next({ name: "home" });
+  //   }
+  // },
 };
 </script>

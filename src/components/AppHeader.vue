@@ -30,10 +30,7 @@
             </li>
             <li>
               <!-- click調用store裡的登出事件 -->
-              <a
-                class="px-2 text-white"
-                href="#"
-                @click.prevent="userStore.signOut"
+              <a class="px-2 text-white" href="#" @click.prevent="signOut"
                 >Logout</a
               >
             </li>
@@ -61,6 +58,14 @@ export default {
     toggleAuthModal() {
       // 這邊的modalStore會是modal.js裡的modal加上Store 是自動創建出來的，可以看vue開發者工具
       this.modalStore.isOpen = !this.modalStore.isOpen;
+    },
+    // 如果只調用store裡面的登入的話，會留在原mange頁面，所以這邊這樣做讓他可以跳轉回首頁
+    signOut() {
+      this.useUserStore.signOut();
+      //取得manage的meta去做判斷
+      if (this.$route.meta.requiresAuth) {
+        this.$router.push({ name: "home" });
+      }
     },
   },
 };
