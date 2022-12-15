@@ -3,7 +3,7 @@
   <section class="container mx-auto mt-6">
     <div class="md:grid md:grid-cols-3 md:gap-4">
       <div class="col-span-1">
-        <music-upload></music-upload>
+        <music-upload :addSong="addSong"></music-upload>
       </div>
       <div class="col-span-2">
         <div
@@ -16,114 +16,14 @@
             ></i>
           </div>
           <div class="p-6">
-            <!-- Composition Items -->
-            <div class="border border-gray-200 p-3 mb-4 rounded">
-              <div>
-                <h4 class="inline-block text-2xl font-bold">Song Name</h4>
-                <button
-                  class="ml-1 py-1 px-2 text-sm rounded text-white bg-red-600 float-right"
-                >
-                  <i class="fa fa-times"></i>
-                </button>
-                <button
-                  class="ml-1 py-1 px-2 text-sm rounded text-white bg-blue-600 float-right"
-                >
-                  <i class="fa fa-pencil-alt"></i>
-                </button>
-              </div>
-              <div>
-                <form>
-                  <div class="mb-3">
-                    <label class="inline-block mb-2">Song Title</label>
-                    <input
-                      type="text"
-                      class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                      placeholder="Enter Song Title"
-                    />
-                  </div>
-                  <div class="mb-3">
-                    <label class="inline-block mb-2">Genre</label>
-                    <input
-                      type="text"
-                      class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                      placeholder="Enter Genre"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    class="py-1.5 px-3 rounded text-white bg-green-600"
-                  >
-                    Submit
-                  </button>
-                  <button
-                    type="button"
-                    class="py-1.5 px-3 rounded text-white bg-gray-600"
-                  >
-                    Go Back
-                  </button>
-                </form>
-              </div>
-            </div>
-            <div class="border border-gray-200 p-3 mb-4 rounded">
-              <div>
-                <h4 class="inline-block text-2xl font-bold">Song Name</h4>
-                <button
-                  class="ml-1 py-1 px-2 text-sm rounded text-white bg-red-600 float-right"
-                >
-                  <i class="fa fa-times"></i>
-                </button>
-                <button
-                  class="ml-1 py-1 px-2 text-sm rounded text-white bg-blue-600 float-right"
-                >
-                  <i class="fa fa-pencil-alt"></i>
-                </button>
-              </div>
-            </div>
-            <div class="border border-gray-200 p-3 mb-4 rounded">
-              <div>
-                <h4 class="inline-block text-2xl font-bold">Song Name</h4>
-                <button
-                  class="ml-1 py-1 px-2 text-sm rounded text-white bg-red-600 float-right"
-                >
-                  <i class="fa fa-times"></i>
-                </button>
-                <button
-                  class="ml-1 py-1 px-2 text-sm rounded text-white bg-blue-600 float-right"
-                >
-                  <i class="fa fa-pencil-alt"></i>
-                </button>
-              </div>
-            </div>
-            <div class="border border-gray-200 p-3 mb-4 rounded">
-              <div>
-                <h4 class="inline-block text-2xl font-bold">Song Name</h4>
-                <button
-                  class="ml-1 py-1 px-2 text-sm rounded text-white bg-red-600 float-right"
-                >
-                  <i class="fa fa-times"></i>
-                </button>
-                <button
-                  class="ml-1 py-1 px-2 text-sm rounded text-white bg-blue-600 float-right"
-                >
-                  <i class="fa fa-pencil-alt"></i>
-                </button>
-              </div>
-            </div>
-            <div class="border border-gray-200 p-3 mb-4 rounded">
-              <div>
-                <h4 class="inline-block text-2xl font-bold">Song Name</h4>
-                <button
-                  class="ml-1 py-1 px-2 text-sm rounded text-white bg-red-600 float-right"
-                >
-                  <i class="fa fa-times"></i>
-                </button>
-                <button
-                  class="ml-1 py-1 px-2 text-sm rounded text-white bg-blue-600 float-right"
-                >
-                  <i class="fa fa-pencil-alt"></i>
-                </button>
-              </div>
-            </div>
+            <composition-item
+              v-for="(song, i) in songs"
+              :key="song.docID"
+              :song="song"
+              :updateSong="updateSong"
+              :index="i"
+              :removeSong="removeSong"
+            ></composition-item>
           </div>
         </div>
       </div>
@@ -134,9 +34,17 @@
 <script>
 // import useUserStore from "@/stores/user";
 import MusicUpload from "@/components/MusicUpload.vue";
+import CompositionItem from "@/components/CompositionItem.vue";
+import { songsCollection, auth } from "@/includes/firebase";
+
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "manage",
+  data() {
+    return {
+      songs: [],
+    };
+  },
   // beforeRouteEnter(to, from, next) {
   //   // 在route創建前先載入它的資訊
   //   const store = useUserStore();
@@ -146,9 +54,33 @@ export default {
   //     next({ name: "home" });
   //   }
   // },
-
+  methods: {
+    updateSong(i, values) {
+      this.songs[i].modified_name = values.modified_name;
+      this.songs[i].genre = values.genre;
+    },
+    // 刪除song列表裡的自己那筆
+    removeSong(i) {
+      this.songs.splice(i, 1);
+    },
+    addSong(item) {
+      // 我只要snapshot裡面的data跟id id是方便後面編輯或刪除
+      console.log(item);
+      const song = { ...item.data(), docID: item.id };
+      this.songs.push(song);
+    },
+  },
   components: {
     MusicUpload,
+    CompositionItem,
+  },
+  async created() {
+    // created方法正在查找一個名為songsCollection的集合，並查找其中包含當前用戶的UID的文檔。
+    // 就是回傳與用戶uid一樣的歌曲，因為上傳時有傳一個uid的值
+    const snapshot = await songsCollection
+      .where("uid", "==", auth.currentUser.uid)
+      .get();
+    snapshot.forEach(this.addSong);
   },
 };
 </script>

@@ -56,6 +56,7 @@ export default {
       uploads: [],
     };
   },
+  props: ["addSong"],
   methods: {
     // 東西drop放下的時候會觸發上傳函式
     upload($event) {
@@ -124,7 +125,11 @@ export default {
 
             song.url = await task.snapshot.ref.getDownloadURL();
             //把音樂資訊傳進資料庫
-            await songsCollection.add(song);
+            const songRef = await songsCollection.add(song);
+            const songSnapshot = await songRef.get();
+
+            this.addSong(songSnapshot);
+
             this.uploads[uploadIndex].variant = "bg-green-400";
             this.uploads[uploadIndex].icon = "fas fa-check";
             this.uploads[uploadIndex].text_class = "text-green-400";
@@ -136,7 +141,7 @@ export default {
   //   解除掛載前
   beforeUnmount() {
     this.uploads.forEach((item) => {
-        // task.cancel停止向firebase上傳
+      // task.cancel停止向firebase上傳
       item.task.cancel();
     });
   },
