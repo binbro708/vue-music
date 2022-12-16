@@ -5,9 +5,10 @@ import App from "./App.vue";
 import router from "./router";
 // 匯入表單驗證設定
 import VeeValidatePlugin from "@/includes/validation";
-// 匯入firebase設定
-
+// 匯入firebase身分驗證的功能
 import { auth } from "@/includes/firebase";
+//匯入Icon
+import Icon from "@/directives/icon.js";
 
 import "@/assets/base.css";
 import "@/assets/main.css";
@@ -23,6 +24,9 @@ auth.onAuthStateChanged(() => {
     app.use(router);
     // 使用表單驗證
     app.use(VeeValidatePlugin);
+    // 註冊自訂V指令
+    app.directive("icon", Icon);
+
     app.mount("#app");
   }
 });
