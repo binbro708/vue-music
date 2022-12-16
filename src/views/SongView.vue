@@ -121,6 +121,13 @@ export default {
       this.$router.push({ name: "home" });
       return;
     }
+
+    // 取得route的查詢變數(query)下的sort
+    const { sort } = this.$route.query;
+
+    // 如果sort裡面是1或2的時候就會是那個排序，如果沒有就代表還沒被排序過，就會是預設值
+    this.sort = sort === "1" || sort === "2" ? sort : "1";
+
     this.song = docSnapshot.data();
     this.getComments();
   },
@@ -171,6 +178,21 @@ export default {
       this.comments = [];
       snapshot.forEach((item) => {
         this.comments.push({ docID: item.id, ...item.data() });
+      });
+    },
+  },
+  watch: {
+    // 監控sort的變化
+    // 這意味着如果sort屬性的值改變，那麼URL中的查詢參數也會改變。
+    // 如果newVal已經有過了url就不用再新增sort
+    sort(newVal) {
+      if (newVal === this.$route.query.sort) {
+        return;
+      }
+      this.$router.push({
+        query: {
+          sort: newVal,
+        },
       });
     },
   },
