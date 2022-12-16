@@ -71,6 +71,7 @@ export default {
         if (item.type != "audio/mpeg") {
           return;
         }
+
         // 用於取得一個引用，方便後面的操作
         const storageRef = storage.ref(); //music-89314.appspot.com
         // 我要在storage下再創造另一個拿來存放的方便管理

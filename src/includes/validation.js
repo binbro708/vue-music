@@ -22,6 +22,9 @@ import {
   not_one_of as excluded,
 } from "@vee-validate/rules";
 
+// 載入i18n
+// import { localize, setLocale } from "@vee-validate/i18n";
+// import zhTW from "@vee-validate/i18n/dist/locale/zh_TW.json";
 export default {
   install(app) {
     app.component("VeeForm", VeeForm);
@@ -41,6 +44,7 @@ export default {
     defineRule("excluded", excluded);
     defineRule("country_excluded", excluded);
 
+    // TODO 更改提示語
     configure({
       generateMessage: (ctx) => {
         const messages = {
@@ -66,5 +70,15 @@ export default {
       validateOnInput: false,
       validateOnModelUpdate: true,
     });
+    // 註冊i18n
+
+    // configure({
+    //   generateMessage: localize({ zh_TW: zhTW }),
+    //   validateOnBlur: true,
+    //   validateOnChange: true,
+    //   validateOnInput: false,
+    //   validateOnModelUpdate: true,
+    // });
+    // setLocale("zh_TW");
   },
 };
