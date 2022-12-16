@@ -30,6 +30,15 @@ const storage = firebase.storage();
 const userCollection = db.collection("users");
 // 音樂儲存庫
 const songsCollection = db.collection("songs");
+// 評論儲存庫
+const commentsCollection = db.collection("comments");
 
 // 再把方法匯出，就能在別的地方使用這些方法，可以提高code的閱讀性
-export { auth, db, userCollection, storage, songsCollection };
+export {
+  auth,
+  db,
+  userCollection,
+  storage,
+  songsCollection,
+  commentsCollection,
+};

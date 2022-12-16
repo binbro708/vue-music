@@ -3,9 +3,14 @@
     class="flex justify-between items-center p-3 pl-6 cursor-pointer transition duration-300 hover:bg-gray-50"
   >
     <div>
-      <a href="#" class="font-bold block text-gray-600">
+      <!-- 路由連結將會指向名為 song 的路由，並且將附帶一個叫做 id 的參數，其值為 song.docID 。 -->
+      <!-- 這邊params的id是跟router index對到的 把那邊的id設為這邊的song.docID -->
+      <router-link
+        :to="{ name: 'song', params: { id: song.docID } }"
+        class="font-bold block text-gray-600"
+      >
         {{ song.modified_name }}
-      </a>
+      </router-link>
       <span class="text-gray-500 text-sm"> {{ song.display_name }}</span>
     </div>
 
@@ -21,6 +26,7 @@
 <script>
 export default {
   name: "SongItem",
+  
   props: ["song"],
 };
 </script>

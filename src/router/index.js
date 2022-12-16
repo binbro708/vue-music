@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/views/HomeView.vue";
 import About from "@/views/AboutView.vue";
 import Manage from "@/views/ManageView.vue";
+// 因為動態router的關係要載入元件
+import Song from "@/views/SongView.vue";
 import useUserStore from "@/stores/user";
 const routes = [
   {
@@ -34,6 +36,12 @@ const routes = [
     path: "/manage",
     // 重新定向
     redirect: { name: "manage" },
+  },
+  {
+    name: "song",
+    // 動態路由設置
+    path: "/song/:id",
+    component: Song,
   },
   // 取所有的路由來重新定位到首頁
   {
