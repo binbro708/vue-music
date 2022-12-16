@@ -119,24 +119,26 @@ export default {
       sort: "1",
     };
   },
-  async created() {
+  async beforeRouteEnter(to, from, next) {
     // 把要查詢的值直接用route的id
-    const docSnapshot = await songsCollection.doc(this.$route.params.id).get();
-    // 確保歌曲無效時不會載入頁面
-    //exists 用來檢測是否有返回，沒東西就回重新導向回home
-    if (!docSnapshot.exists) {
-      this.$router.push({ name: "home" });
-      return;
-    }
+    const docSnapshot = await songsCollection.doc(to.params.id).get();
+    next((vm) => {
+      // 確保歌曲無效時不會載入頁面
+      //exists 用來檢測是否有返回，沒東西就回重新導向回home
+      if (!docSnapshot.exists) {
+        vm.$router.push({ name: "home" });
+        return;
+      }
 
-    // 取得route的查詢變數(query)下的sort
-    const { sort } = this.$route.query;
+      // 取得route的查詢變數(query)下的sort
+      const { sort } = vm.$route.query;
 
-    // 如果sort裡面是1或2的時候就會是那個排序，如果沒有就代表還沒被排序過，就會是預設值
-    this.sort = sort === "1" || sort === "2" ? sort : "1";
+      // 如果sort裡面是1或2的時候就會是那個排序，如果沒有就代表還沒被排序過，就會是預設值
+      vm.sort = sort === "1" || sort === "2" ? sort : "1";
 
-    this.song = docSnapshot.data();
-    this.getComments();
+      vm.song = docSnapshot.data();
+      vm.getComments();
+    });
   },
   computed: {
     ...mapState(useUserStore, ["userLoggedIn"]),
