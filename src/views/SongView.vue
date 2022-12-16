@@ -7,9 +7,11 @@
     ></div>
     <div class="container mx-auto flex items-center">
       <!-- Play/Pause Button -->
+      <!-- 這邊傳出去的song是在created生命週期時所抓到的 -->
       <button
         type="button"
         class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
+        @click.prevent="newSong(song)"
       >
         <i class="fas fa-play"></i>
       </button>
@@ -27,7 +29,7 @@
     <div class="bg-white rounded border border-gray-200 relative flex flex-col">
       <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
         <!-- Comment Count -->
-        <span class="card-title">Comments (15)</span>
+        <span class="card-title">評論 ({{ song.comment_count }})</span>
         <i class="fa fa-comments float-right text-green-400 text-2xl"></i>
       </div>
       <div class="p-6">
@@ -91,8 +93,9 @@
 
 <script>
 import { songsCollection, auth, commentsCollection } from "@/includes/firebase";
-import { mapState } from "pinia";
+import { mapState, mapActions } from "pinia";
 import useUserStore from "@/stores/user";
+import usePlayerStore from "@/stores/player";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -144,6 +147,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(usePlayerStore, ["newSong"]),
     // 加入評論
     async addComment(values, { resetForm }) {
       this.comment_in_submission = true;
@@ -160,6 +164,12 @@ export default {
       };
 
       await commentsCollection.add(comment);
+      //   評論有成功被加入 評論數+1
+      this.song.comment_count += 1;
+      //   請求更新數據
+      await songsCollection.doc(this.$route.params.id).update({
+        comment_count: this.song.comment_count,
+      });
       //   添加新評論時重新請求評論列表
       this.getComments();
 
