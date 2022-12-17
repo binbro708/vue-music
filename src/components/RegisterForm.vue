@@ -16,82 +16,57 @@
   >
     <!-- Name -->
     <div class="mb-3">
-      <label class="inline-block mb-2">Name</label>
+      <label class="inline-block mb-2">姓名</label>
       <!-- 要驗證的input改成 vee-field -->
 
       <vee-field
         name="name"
         type="text"
         class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-        placeholder="Enter Name"
+        placeholder="姓名"
       />
       <ErrorMessage class="text-red-600" name="name"></ErrorMessage>
     </div>
     <!-- Email -->
     <div class="mb-3">
-      <label class="inline-block mb-2">Email</label>
+      <label class="inline-block mb-2">信箱</label>
       <vee-field
         name="email"
         type="email"
         class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-        placeholder="Enter Email"
+        placeholder="信箱"
       />
       <ErrorMessage class="text-red-600" name="email"></ErrorMessage>
     </div>
-    <!-- Age -->
-    <div class="mb-3">
-      <label class="inline-block mb-2">Age</label>
-      <vee-field
-        name="age"
-        type="number"
-        class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-      />
-      <ErrorMessage class="text-red-600" name="age"></ErrorMessage>
-    </div>
+
     <!-- Password -->
     <div class="mb-3">
-      <label class="inline-block mb-2">Password</label>
+      <label class="inline-block mb-2">密碼</label>
       <!-- bails 一個一個檢查規則 -->
       <vee-field name="password" :bails="false" v-slot="{ field, errors }">
         <input
           type="password"
           class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-          placeholder="Password"
+          placeholder="密碼"
           v-bind="field"
         />
         <div class="text-red-600" v-for="error in errors" :key="error">
           {{ error }}
         </div>
       </vee-field>
-      <ErrorMessage class="text-red-600" name="password"></ErrorMessage>
     </div>
     <!-- Confirm Password -->
     <div class="mb-3">
-      <label class="inline-block mb-2">Confirm Password</label>
+      <label class="inline-block mb-2">再次輸入密碼</label>
       <vee-field
         name="confirm_password"
         type="password"
         class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-        placeholder="Confirm Password"
+        placeholder="再次輸入密碼"
       />
       <ErrorMessage class="text-red-600" name="confirm_password"></ErrorMessage>
     </div>
-    <!-- Country -->
-    <div class="mb-3">
-      <label class="inline-block mb-2">Country</label>
-      <!-- option要跟select對到所以要用as -->
-      <vee-field
-        as="select"
-        name="country"
-        class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-      >
-        <option value="USA">USA</option>
-        <option value="Mexico">Mexico</option>
-        <option value="Germany">Germany</option>
-        <option value="China">China</option>
-      </vee-field>
-      <ErrorMessage class="text-red-600" name="country"></ErrorMessage>
-    </div>
+
     <!-- TOS -->
     <div class="mb-3 pl-6">
       <vee-field
@@ -100,7 +75,7 @@
         type="checkbox"
         class="w-4 h-4 float-left -ml-6 mt-1 rounded"
       />
-      <label class="inline-block">Accept terms of service</label>
+      <label class="inline-block">接受服務條款</label>
       <ErrorMessage class="text-red-600 block" name="tos"></ErrorMessage>
     </div>
     <button
@@ -108,7 +83,7 @@
       class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition hover:bg-purple-700"
       :disabled="reg_in_sub"
     >
-      Submit
+      註冊
     </button>
   </vee-form>
 </template>
@@ -126,19 +101,15 @@ export default {
       schema: {
         name: "required|min:1|max:100",
         email: "required|min:3|max:100|email",
-        age: "required|min_value:18|max_value:150",
         password: "required|min:8|max:16|excluded:password",
         confirm_password: "passwords_mismatch:@password",
-        country: "required|country_excluded:China",
         tos: "tos",
       },
-      userData: {
-        country: "USA",
-      },
+
       reg_in_sub: false,
       reg_show_alert: false,
       reg_alert_variant: "bg-blue-500",
-      reg_alert_msg: "請稍等",
+      reg_alert_msg: "註冊中",
     };
   },
   // 註冊pinia裡的Action
@@ -149,13 +120,14 @@ export default {
       this.reg_in_sub = true;
       this.reg_show_alert = true;
       this.reg_alert_variant = "bg-blue-500";
-      this.reg_alert_msg = "請稍等";
+      this.reg_alert_msg = "註冊中";
 
       // 請求身分註冊
       try {
         // 使用註冊完的Action並且把values傳進去
         await this.createUser(values);
       } catch (err) {
+        console.log(err);
         this.reg_in_sub = false;
         this.reg_alert_variant = "bg-red-500";
         this.reg_alert_msg = "請重新嘗試";
@@ -163,7 +135,7 @@ export default {
       }
 
       this.reg_alert_variant = "bg-green-500";
-      this.reg_alert_msg = "成功desu!";
+      this.reg_alert_msg = "註冊成功!請返回登入";
       window.location.reload();
     },
   },

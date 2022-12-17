@@ -10,7 +10,7 @@
           class="bg-white rounded border border-gray-200 relative flex flex-col"
         >
           <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
-            <span class="card-title">My Songs</span>
+            <span class="card-title">我的音樂</span>
             <i
               class="fa fa-compact-disc float-right text-green-400 text-2xl"
             ></i>
@@ -65,7 +65,6 @@ export default {
     },
     addSong(item) {
       // 我只要snapshot裡面的data跟id id是方便後面編輯或刪除
-      console.log(item);
       const song = { ...item.data(), docID: item.id };
       this.songs.push(song);
     },

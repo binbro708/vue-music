@@ -3,7 +3,7 @@
     <!-- Track Info -->
     <div class="text-center" v-if="current_song.modified_name">
       <span class="song-title font-bold">{{ current_song.modified_name }}</span>
-      by
+      上傳者:
       <span class="song-artist">{{ current_song.display_name }}</span>
     </div>
     <div class="flex flex-nowrap gap-4 items-center">

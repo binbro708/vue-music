@@ -7,31 +7,28 @@
         class="text-white font-bold uppercase text-2xl mr-4"
         :to="{ name: 'home' }"
         exact-active-class="no-active"
-        >Music</router-link
+        >首頁</router-link
       >
 
       <div class="flex flex-grow items-center">
         <!-- Primary Navigation -->
         <ul class="flex flex-row mt-1">
-          <router-link class="px-2 text-white" :to="{ name: 'about' }"
-            >About</router-link
-          >
           <!-- Navigation Links -->
           <li v-if="!userStore.userLoggedIn">
             <a class="px-2 text-white" href="#" @click.prevent="toggleAuthModal"
-              >Login / Register</a
+              >登入/註冊</a
             >
           </li>
           <template v-else>
             <li>
               <router-link class="px-2 text-white" :to="{ name: 'manage' }"
-                >Manage</router-link
+                >管理</router-link
               >
             </li>
             <li>
               <!-- click調用store裡的登出事件 -->
               <a class="px-2 text-white" href="#" @click.prevent="signOut"
-                >Logout</a
+                >登出</a
               >
             </li>
           </template>

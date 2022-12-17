@@ -48,17 +48,16 @@ export default {
     configure({
       generateMessage: (ctx) => {
         const messages = {
-          required: `The field ${ctx.field} is required.`,
-          min: `The field ${ctx.field} is too short.`,
-          max: `The field ${ctx.field} is too long.`,
+          required: ` 此欄位不得為空`,
+          min: `  太短了`,
+          max: `  太長了`,
           alpha_spaces: `The field ${ctx.field} may only contain alphabetical characters and spaces.`,
-          email: `The field ${ctx.field} must be a valid email.`,
+          email: ` 信箱格式錯誤`,
           min_value: `The field ${ctx.field} is too low.`,
           max_value: `The field ${ctx.field} is too hight.`,
-          excluded: `You are bot allowed to use this value for the field ${ctx.field}`,
-          country_excluded: `not this `,
-          passwords_mismatch: `the passwords don't match`,
-          tos: `打勾`,
+          excluded: ` 此密碼不被允許`,
+          passwords_mismatch: `密碼不一致`,
+          tos: `請同意`,
         };
         const message = messages[ctx.rule.name]
           ? messages[ctx.rule.name]

@@ -31,22 +31,22 @@
         @submit="edit"
       >
         <div class="mb-3">
-          <label class="inline-block mb-2">Song Title</label>
+          <label class="inline-block mb-2">標題</label>
           <vee-field
             name="modified_name"
             type="text"
             class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-            placeholder="Enter Song Title"
+            placeholder="輸入標題"
           />
           <ErrorMessage class="text-red-600" name="modified_name" />
         </div>
         <div class="mb-3">
-          <label class="inline-block mb-2">Genre</label>
+          <label class="inline-block mb-2">類別</label>
           <vee-field
             name="genre"
             type="text"
             class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-            placeholder="Enter Genre"
+            placeholder="輸入類別"
           />
           <ErrorMessage class="text-red-600" name="genre" />
         </div>
@@ -55,7 +55,7 @@
           class="py-1.5 px-3 rounded text-white bg-green-600"
           :disabled="in_submission"
         >
-          Submit
+          送出
         </button>
         <button
           type="button"
@@ -63,7 +63,7 @@
           :disabled="in_submission"
           @click.prevent="showForm = false"
         >
-          Go Back
+          返回
         </button>
       </vee-form>
     </div>
