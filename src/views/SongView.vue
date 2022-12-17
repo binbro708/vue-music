@@ -161,9 +161,19 @@ export default {
       this.comment_alert_variant = "bg-blue-500";
       this.comment_alert_message = "評論發布中";
 
+      const date = new Date();
+      let day = date.getDate().toString();
+      let month = (date.getMonth() + 1).toString();
+      let year = date.getFullYear().toString();
+      let h = date.getHours().toString();
+      let m = date.getMinutes().toString();
+      let s = date.getSeconds().toString();
+      let totalDate = `${year}-${month}-${day} ${
+        h < 10 ? "0" : ""
+      }${h}:${m}:${s}`;
       const comment = {
         content: values.comment,
-        datePosted: new Date().toString(),
+        datePosted: totalDate,
         sid: this.$route.params.id,
         name: auth.currentUser.displayName,
         uid: auth.currentUser.uid,
