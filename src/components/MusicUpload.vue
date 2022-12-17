@@ -71,7 +71,17 @@ export default {
         if (item.type != "audio/mpeg") {
           return;
         }
-
+        if (!navigator.onLine) {
+          this.uploads.push({
+            task: {},
+            current_progress: "100",
+            name: item.name,
+            variant: "bg-red-400",
+            icon: "fas fa-times",
+            text_class: "text-red-400",
+          });
+          return;
+        }
         // 用於取得一個引用，方便後面的操作
         const storageRef = storage.ref(); //music-89314.appspot.com
         // 我要在storage下再創造另一個拿來存放的方便管理

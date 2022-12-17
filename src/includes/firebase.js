@@ -26,6 +26,10 @@ const db = firebase.firestore();
 // 儲存庫
 const storage = firebase.storage();
 
+db.enablePersistence().catch((error) => {
+  console.log(`Firebase persistence error ${error.code}`);
+});
+
 // 在資料庫選擇 如果沒有也沒關係firebase會自動幫你創建
 const userCollection = db.collection("users");
 // 音樂儲存庫
