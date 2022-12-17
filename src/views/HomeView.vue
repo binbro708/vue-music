@@ -8,8 +8,13 @@
       ></div>
       <div class="container mx-auto">
         <div class="text-white main-header-content">
-          <h1 class="font-bold text-5xl mb-5">音樂撥放器!</h1>
-          <p class="w-full md:w-8/12 mx-auto">這是一個音樂撥放器</p>
+          <h1 class="font-bold text-5xl mb-5">音樂播放器</h1>
+          <p class="w-full md:w-8/12 mx-auto">
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+            Exercitationem quis repudiandae error provident natus ratione
+            eveniet qui fugiat dignissimos quia consequuntur consequatur
+            incidunt, quibusdam illo! Reiciendis aut vel asperiores omnis.
+          </p>
         </div>
       </div>
 
