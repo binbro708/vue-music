@@ -10,8 +10,17 @@ import { auth } from "@/includes/firebase";
 //匯入Icon
 import Icon from "@/directives/icon.js";
 
+import { registerSW } from "virtual:pwa-register";
+// 匯入讀取條
+// import progressBar from "@/includes/progress-bar";
+
 import "@/assets/base.css";
 import "@/assets/main.css";
+import "nprogress/nprogress.css";
+// 把router傳進去
+// progressBar(router);
+
+registerSW({ immediate: true });
 
 let app;
 
